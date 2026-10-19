@@ -1,0 +1,13 @@
+<view class="container center">
+  <view class="logo">📘</view>
+  <view class="title">日语天天练</view>
+  <view class="subtitle">每天 8 个词，慢慢坚持下去！</view>
+
+  <view class="card">
+    <view class="subtitle">零基础也能学的有趣日语</view>
+    <view class="subtitle">🔊 听发音 · 选意思 · 攒积分 · 📅 看日历</view>
+  </view>
+
+  <button class="btn-primary" bindtap="start">开始学习</button>
+  <view class="subtitle center" style="margin-top:24rpx">适合小朋友的 N5 日语启蒙</view>
+</view>

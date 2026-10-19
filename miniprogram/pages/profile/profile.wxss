@@ -1,0 +1,7 @@
+.ach {
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid #F0E6DC;
+  opacity: 0.5;
+}
+.ach.got { opacity: 1; }
+.ach-name { font-size: 30rpx; font-weight: 600; }

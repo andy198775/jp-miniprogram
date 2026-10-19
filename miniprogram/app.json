@@ -1,0 +1,23 @@
+{
+  "pages": [
+    "pages/launch/launch",
+    "pages/home/home",
+    "pages/learn/learn",
+    "pages/calendar/calendar",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#FF8C42",
+    "navigationBarTitleText": "日语天天练",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#FFF7ED"
+  },
+  "plugins": {
+    "WechatSI": {
+      "version": "0.3.5",
+      "provider": "wx069ba97219f66d99"
+    }
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

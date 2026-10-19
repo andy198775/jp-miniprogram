@@ -1,0 +1,25 @@
+.kana {
+  font-size: 76rpx;
+  font-weight: 700;
+  color: #3A2E25;
+}
+.opts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 16rpx;
+}
+.opt {
+  width: 48%;
+  margin-bottom: 20rpx;
+  background: #fff;
+  color: #3A2E25;
+  border: 2rpx solid #FFD8B0;
+  border-radius: 18rpx;
+  font-size: 30rpx;
+  padding: 26rpx 0;
+  text-align: center;
+}
+.opt::after { border: none; }
+.opt.ok { background: #E6F7EC; border-color: #34C759; color: #1B8A3A; }
+.opt.no { background: #FDECEA; border-color: #FF6B5E; color: #C0392B; }

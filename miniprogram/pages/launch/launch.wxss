@@ -1,0 +1,4 @@
+.logo {
+  font-size: 120rpx;
+  margin: 60rpx 0 20rpx;
+}

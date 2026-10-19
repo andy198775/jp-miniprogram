@@ -1,0 +1,36 @@
+<view class="container">
+  <view class="card row">
+    <view>
+      <view class="subtitle">总积分</view>
+      <view class="title hl">{{points}}</view>
+    </view>
+    <view style="text-align:right">
+      <view class="subtitle">累计学会</view>
+      <view class="title hl">{{learnedTotal}} 词</view>
+    </view>
+  </view>
+
+  <view class="card row">
+    <view>
+      <view class="subtitle">当前连续</view>
+      <view class="title hl">{{streakCurrent}} 天</view>
+    </view>
+    <view style="text-align:right">
+      <view class="subtitle">最长连续</view>
+      <view class="title hl">{{streakLongest}} 天</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="title">成就</view>
+    <view
+      wx:for="{{achievements}}"
+      wx:key="name"
+      class="ach {{item.got ? 'got' : ''}}">
+      <view class="ach-name">{{item.got ? '🏅' : '🔒'}} {{item.name}}</view>
+      <view class="subtitle">{{item.desc}}</view>
+    </view>
+  </view>
+
+  <view class="subtitle center">每天来学一点点，坚持最酷！</view>
+</view>

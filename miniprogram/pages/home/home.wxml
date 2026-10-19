@@ -1,0 +1,26 @@
+<view class="container">
+  <view class="card row">
+    <view>
+      <view class="subtitle">我的积分</view>
+      <view class="title hl">{{points}}</view>
+    </view>
+    <view style="text-align:right">
+      <view class="subtitle">连续打卡</view>
+      <view class="title hl">{{streakCurrent}} 天</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="title">今日任务</view>
+    <view class="subtitle" wx:if="{{todayDone}}">✅ 今天已经学过啦，明天再来！</view>
+    <view class="subtitle" wx:else>新词 {{newCount}} 个 · 复习 {{reviewCount}} 个</view>
+    <button class="btn-primary" style="margin-top:20rpx" bindtap="goLearn" disabled="{{todayDone}}">去学习</button>
+  </view>
+
+  <view class="card row">
+    <button class="btn-ghost" style="flex:1;margin-right:12rpx" bindtap="goCalendar">📅 学习日历</button>
+    <button class="btn-ghost" style="flex:1;margin-left:12rpx" bindtap="goProfile">👤 我的</button>
+  </view>
+
+  <view class="subtitle center">已学会 {{learnedTotal}} 个词 · 最长连续 {{streakLongest}} 天</view>
+</view>

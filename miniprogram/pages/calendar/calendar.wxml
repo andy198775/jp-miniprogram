@@ -1,0 +1,35 @@
+<view class="container">
+  <view class="card row">
+    <button class="btn-ghost" style="width:120rpx" bindtap="prev">‹</button>
+    <view class="title">{{monthLabel}}</view>
+    <button class="btn-ghost" style="width:120rpx" bindtap="next">›</button>
+  </view>
+
+  <view class="card">
+    <view class="weekdays">
+      <text wx:for="{{weekdays}}" wx:key="*this" class="wd">{{item}}</text>
+    </view>
+    <view class="grid">
+      <view
+        wx:for="{{cells}}"
+        wx:key="key"
+        class="cell {{item.empty ? 'empty' : ''}} {{item.count > 0 ? 'done' : ''}} {{item.key === selected ? 'sel' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="tapDay">
+        <text wx:if="{{!item.empty}}">{{item.day}}</text>
+        <text wx:if="{{item.count > 0}}" class="dot">●</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{selected}}">
+    <view class="title" wx:if="{{detail}}">{{selected}} 学习记录</view>
+    <view class="title" wx:else>{{selected}}</view>
+    <block wx:if="{{detail}}">
+      <view class="row"><text class="subtitle">学习单词</text><text class="hl">{{detail.count}} 个</text></view>
+      <view class="row"><text class="subtitle">答对</text><text class="hl">{{detail.correct}} 个</text></view>
+      <view class="row"><text class="subtitle">用时</text><text class="hl">{{detail.duration}} 秒</text></view>
+    </block>
+    <view class="subtitle" wx:else>这一天还没有学习记录～</view>
+  </view>
+</view>
