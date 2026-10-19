@@ -12,7 +12,7 @@
 - [x] 页面 launch / home / learn / calendar / profile 初版 — 2026-10-19
 - [x] 发音封装（微信同声传译插件，假名合成）— 2026-10-19
 - [x] Git 仓库初始化 + 两机同步规范 + 本看板 — 2026-10-19
-- [x] GitHub 远程已连接：`origin=https://github.com/andy198775/jp-miniprogram.git`，分支 `main`，3 提交就绪；**首次 push 因本机 Clash 把 github.com 走直连被 reset，需你本机（Clash 正确分流）执行 `git push -u origin main`** — 2026-10-19
+- [x] GitHub 远程已连接并**推送成功**：`origin=https://github.com/andy198775/jp-miniprogram.git`，分支 `main`，4 提交全部上线（`origin/main` = c8061fe）— 2026-10-19
 
 ### 进行中 / 待办（按实现顺序）
 - [ ] **联调验证①**：注册个人小程序账号、后台加「微信同声传译」插件、开通云开发、填环境 ID、上传 4 个云函数、建 5 集合（users/userWords/streaks/pointsLedger/dailyLogs），编译跑通登录→背词→积分→日历
@@ -27,5 +27,5 @@
 - [ ] M4 商业化：注册个体户/公司 → 升级主体 → 微信支付 → 商城/会员
 
 ### 阻塞 / 待你决定
-- [x] GitHub 远程仓库：仓库 `jp-miniprogram`（公开）已建，remote 已加，3 提交待 push；首次 push 受阻于本机 Clash 直连 github.com（见 `协作同步流程.md` §8），待你本机执行 `git push -u origin main`
+- [x] GitHub 远程仓库：仓库 `jp-miniprogram`（公开）已建，remote 已加，**4 提交已成功 push 到 `origin/main`**（Clash 正确分流后推送成功）— 2026-10-19
 - [ ] 词库版权：自整理 90 词仅 MVP 用，正式商用建议采购正版 N5 词库
