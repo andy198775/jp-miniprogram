@@ -1,4 +1,4 @@
-const cloud = require('../../utils/cloud.js');
+const dataService = require('../../utils/dataService.js');
 const audio = require('../../utils/audio.js');
 const { WORDS, NEW_PER_DAY } = require('../../data/words.js');
 
@@ -26,7 +26,7 @@ Page({
   },
 
   onLoad() {
-    cloud.call('getDailyTask')
+    dataService.call('getDailyTask')
       .then((t) => {
         const list = buildSession(t.learnedIds, t.dueIds);
         if (!list.length) {
@@ -90,7 +90,7 @@ Page({
       return;
     }
     wx.showLoading({ title: '保存中' });
-    cloud.call('completeStudy', { answers, durationSec })
+    dataService.call('completeStudy', { answers, durationSec })
       .then((p) => {
         wx.hideLoading();
         const correctCount = answers.filter((a) => a.correct).length;

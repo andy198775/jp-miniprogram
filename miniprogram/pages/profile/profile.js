@@ -1,4 +1,5 @@
-const cloud = require('../../utils/cloud.js');
+const dataService = require('../../utils/dataService.js');
+const app = getApp();
 
 Page({
   data: {
@@ -6,15 +7,17 @@ Page({
     streakCurrent: 0,
     streakLongest: 0,
     learnedTotal: 0,
-    achievements: []
+    achievements: [],
+    mode: 'local'
   },
 
   onShow() {
+    this.setData({ mode: (app.globalData && app.globalData.mode) || 'local' });
     this.load();
   },
 
   load() {
-    cloud.call('getProgress')
+    dataService.call('getProgress')
       .then((p) => {
         this.setData({
           points: p.points,
@@ -37,5 +40,19 @@ Page({
       { name: '半月达人', desc: '连续打卡 15 天', got: p.streakCurrent >= 15 },
       { name: '月度之星', desc: '连续打卡 30 天', got: p.streakCurrent >= 30 }
     ];
+  },
+
+  resetProgress() {
+    wx.showModal({
+      title: '重置试玩进度',
+      content: '会清空本地积分、连续天数、学习日历等所有试玩数据，确定吗？',
+      success: (res) => {
+        if (res.confirm) {
+          dataService.resetAll();
+          wx.showToast({ title: '已重置', icon: 'success' });
+          this.load();
+        }
+      }
+    });
   }
 });

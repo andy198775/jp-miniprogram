@@ -1,4 +1,6 @@
 <view class="container">
+  <view class="badge" wx:if="{{mode === 'local'}}">🧪 本地试玩模式（无需联网/后端）</view>
+
   <view class="card row">
     <view>
       <view class="subtitle">我的积分</view>
@@ -12,9 +14,9 @@
 
   <view class="card">
     <view class="title">今日任务</view>
-    <view class="subtitle" wx:if="{{todayDone}}">✅ 今天已经学过啦，明天再来！</view>
+    <view class="subtitle" wx:if="{{todayDone}}">✅ 今天已经学过啦，可以继续复习或再学一轮</view>
     <view class="subtitle" wx:else>新词 {{newCount}} 个 · 复习 {{reviewCount}} 个</view>
-    <button class="btn-primary" style="margin-top:20rpx" bindtap="goLearn" disabled="{{todayDone}}">去学习</button>
+    <button class="btn-primary" style="margin-top:20rpx" bindtap="goLearn">去学习</button>
     <button class="btn-ghost" style="margin-top:16rpx" bindtap="goReview" wx:if="{{reviewCount > 0}}">📝 复习 {{reviewCount}} 个</button>
   </view>
 

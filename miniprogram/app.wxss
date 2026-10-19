@@ -48,3 +48,39 @@ page {
 
 .row { display: flex; align-items: center; justify-content: space-between; }
 .center { text-align: center; }
+
+/* 本地试玩模式标识 */
+.badge {
+  display: inline-block;
+  background: #FFE8D6;
+  color: #FF8C42;
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 学习卡：日语假名大字 */
+.kana { font-size: 64rpx; font-weight: 700; color: #3A2E25; letter-spacing: 2rpx; }
+
+/* 选项按钮 */
+.opts { display: flex; flex-direction: column; }
+.opt {
+  background: #FFF3E6;
+  color: #3A2E25;
+  border-radius: 18rpx;
+  padding: 24rpx;
+  margin: 12rpx 0;
+  font-size: 32rpx;
+  border: none;
+  width: 100%;
+  text-align: center;
+}
+.opt.ok { background: #D7F5DD; color: #1E7E34; }
+.opt.no { background: #FBD9D6; color: #C0392B; }
+
+/* 成就 */
+.ach { background: #FFF3E6; border-radius: 16rpx; padding: 18rpx 22rpx; margin: 14rpx 0; opacity: 0.55; }
+.ach.got { opacity: 1; border: 2rpx solid #FF8C42; }
+.ach-name { font-size: 30rpx; font-weight: 600; }
+

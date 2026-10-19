@@ -1,4 +1,4 @@
-const cloud = require('../../utils/cloud.js');
+const dataService = require('../../utils/dataService.js');
 
 function pad(n) {
   return n < 10 ? '0' + n : '' + n;
@@ -26,7 +26,7 @@ Page({
   },
 
   load() {
-    cloud.call('getProgress')
+    dataService.call('getProgress')
       .then((p) => {
         const { year, month } = this.data;
         const first = new Date(year, month - 1, 1);

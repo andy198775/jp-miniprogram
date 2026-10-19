@@ -1,4 +1,6 @@
 <view class="container">
+  <view class="badge" wx:if="{{mode === 'local'}}">🧪 本地试玩模式</view>
+
   <view class="card row">
     <view>
       <view class="subtitle">总积分</view>
@@ -32,5 +34,6 @@
     </view>
   </view>
 
+  <button class="btn-ghost" style="margin-top:8rpx" bindtap="resetProgress">🧹 重置试玩进度</button>
   <view class="subtitle center">每天来学一点点，坚持最酷！</view>
 </view>

@@ -1,6 +1,6 @@
 // pages/review/review.js
 // M1-5 复习页：只拉「待复习」词（completeStudy 写入的 dueDate <= 今天），专注复习，复用听音选义 + SM-2。
-const cloud = require('../../utils/cloud.js');
+const dataService = require('../../utils/dataService.js');
 const audio = require('../../utils/audio.js');
 const { WORDS } = require('../../data/words.js');
 
@@ -20,7 +20,7 @@ Page({
   },
 
   onLoad() {
-    cloud.call('getDailyTask')
+    dataService.call('getDailyTask')
       .then((t) => {
         const dueSet = new Set(t.dueIds || []);
         const list = WORDS.filter((w) => dueSet.has(w.id));
@@ -85,7 +85,7 @@ Page({
       return;
     }
     wx.showLoading({ title: '保存中' });
-    cloud.call('completeStudy', { answers, durationSec })
+    dataService.call('completeStudy', { answers, durationSec })
       .then((p) => {
         wx.hideLoading();
         const correctCount = answers.filter((a) => a.correct).length;

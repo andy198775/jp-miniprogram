@@ -1,5 +1,6 @@
-const cloud = require('../../utils/cloud.js');
+const dataService = require('../../utils/dataService.js');
 const store = require('../../utils/store.js');
+const app = getApp();
 const { WORDS, NEW_PER_DAY } = require('../../data/words.js');
 
 Page({
@@ -10,10 +11,12 @@ Page({
     newCount: 0,
     reviewCount: 0,
     todayDone: false,
-    learnedTotal: 0
+    learnedTotal: 0,
+    mode: 'local'
   },
 
   onShow() {
+    this.setData({ mode: (app.globalData && app.globalData.mode) || 'local' });
     this.refresh();
   },
 
@@ -23,7 +26,7 @@ Page({
       wx.reLaunch({ url: '/pages/launch/launch' });
       return;
     }
-    Promise.all([cloud.call('getProgress'), cloud.call('getDailyTask')])
+    Promise.all([dataService.call('getProgress'), dataService.call('getDailyTask')])
       .then(([p, t]) => {
         const learnedSet = new Set(t.learnedIds || []);
         const remain = WORDS.filter((w) => !learnedSet.has(w.id)).length;

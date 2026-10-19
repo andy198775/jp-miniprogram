@@ -6,6 +6,7 @@
   <view class="card">
     <view class="subtitle">零基础也能学的有趣日语</view>
     <view class="subtitle">🔊 听发音 · 选意思 · 攒积分 · 📅 看日历</view>
+    <view class="subtitle" style="margin-top:10rpx;color:#FF8C42">🧪 当前为本地试玩模式，无需联网即可体验完整流程</view>
   </view>
 
   <button class="btn-primary" bindtap="start">开始学习</button>
