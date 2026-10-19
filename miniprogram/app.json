@@ -3,6 +3,7 @@
     "pages/launch/launch",
     "pages/home/home",
     "pages/learn/learn",
+    "pages/review/review",
     "pages/calendar/calendar",
     "pages/profile/profile"
   ],

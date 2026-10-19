@@ -1,0 +1,49 @@
+<!-- 复习进行中 -->
+<view class="container" wx:if="{{!result}}">
+  <view class="subtitle">复习 {{idx + 1}} / {{total}}</view>
+
+  <view class="card center">
+    <view class="kana">{{cur.kana}}</view>
+    <view class="subtitle" wx:if="{{cur.kanji}}">{{cur.kanji}}</view>
+    <view class="subtitle">{{cur.roma}}</view>
+    <button class="btn-ghost" style="margin-top:16rpx" bindtap="playAudio">🔊 听发音</button>
+  </view>
+
+  <view class="subtitle center">选一选它的意思</view>
+  <view class="opts">
+    <button
+      wx:for="{{options}}"
+      wx:key="*this"
+      class="opt {{answered ? (item === cur.cn ? 'ok' : (item === picked ? 'no' : '')) : ''}}"
+      data-cn="{{item}}"
+      bindtap="choose"
+      disabled="{{answered}}">{{item}}</button>
+  </view>
+
+  <view wx:if="{{answered}}" class="center" style="margin-top:16rpx">
+    <view class="hl" wx:if="{{correct}}">✅ 答对啦！</view>
+    <view wx:else>再听一次，想一想～</view>
+    <button class="btn-primary" style="margin-top:16rpx" bindtap="next">{{correct ? '下一个' : '再听一次'}}</button>
+  </view>
+</view>
+
+<!-- 空状态 -->
+<view class="container center" wx:elif="{{result.empty}}">
+  <view class="title">暂时没有要复习的词 🎉</view>
+  <view class="subtitle">去学点新词，明天再来看复习吧！</view>
+  <button class="btn-primary" style="margin-top:30rpx" bindtap="backHome">回到首页</button>
+</view>
+
+<!-- 完成总结 -->
+<view class="container center" wx:else>
+  <view class="title">复习完成！🎉</view>
+  <view class="card">
+    <view class="row"><text>复习单词</text><text class="hl">{{result.studied}} 个</text></view>
+    <view class="row"><text>答对</text><text class="hl">{{result.correct}} 个</text></view>
+    <view class="row"><text>本次积分</text><text class="hl">+{{result.earned}}</text></view>
+    <view class="row"><text>总积分</text><text class="hl">{{result.points}}</text></view>
+    <view class="row"><text>连续打卡</text><text class="hl">{{result.streakCurrent}} 天</text></view>
+    <view class="row"><text>累计学会</text><text class="hl">{{result.learnedTotal}} 个</text></view>
+  </view>
+  <button class="btn-primary" bindtap="backHome">回到首页</button>
+</view>

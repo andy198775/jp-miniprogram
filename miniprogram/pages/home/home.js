@@ -44,6 +44,9 @@ Page({
   goLearn() {
     wx.navigateTo({ url: '/pages/learn/learn' });
   },
+  goReview() {
+    wx.navigateTo({ url: '/pages/review/review' });
+  },
   goCalendar() {
     wx.navigateTo({ url: '/pages/calendar/calendar' });
   },

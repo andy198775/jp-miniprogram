@@ -16,7 +16,7 @@
 ### 进行中 / 待办（按实现顺序）
 - [ ] **联调验证①**：注册个人小程序账号、后台加「微信同声传译」插件、开通云开发、填环境 ID、上传 4 个云函数、建 5 集合（users/userWords/streaks/pointsLedger/dailyLogs），编译跑通登录→背词→积分→日历
 - [ ] **联调验证②**：真机测同声传译 `lang=ja_JP`（个别版本 `ja`），确认日语发音正常
-- [ ] **M1-5 复习调度**：`review` 页 + SM-2 按 `nextReview` 拉待复习词（当前 srs.js 已在 completeStudy 内用，需补独立复习页）
+- [x] **M1-5 复习页**：`pages/review` 已建，调用 getDailyTask 取 dueIds 做专注复习，复用听音选义 + SM-2（代码完成，待真机联调）— 2026-10-19
 - [ ] **M1-8 成就墙**：profile 已有基础，补 `achOwned` 解锁弹窗
 - [ ] **打磨**：每日新词数 NEW_PER_DAY 调参、题型手感、断签/连续边界
 
@@ -26,5 +26,5 @@
 - [ ] M4 商业化：注册个体户/公司 → 升级主体 → 微信支付 → 商城/会员
 
 ### 阻塞 / 待你决定
-- [ ] GitHub 远程仓库链接方式（见对话：你建仓库给 URL / 或提供 PAT 我建 / 或先本地）
+- [x] GitHub 远程仓库：已定名 `jp-study-miniprogram`（公开）；待你在 github.com 建空仓库后把 URL 发我，我 `git remote add` + `push`（2026-10-19 决定）
 - [ ] 词库版权：自整理 90 词仅 MVP 用，正式商用建议采购正版 N5 词库
