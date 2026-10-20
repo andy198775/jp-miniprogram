@@ -26,12 +26,16 @@ jp-miniprogram/
 ```
 
 ## 快速开始（本地试玩，0 配置）
-1. 微信开发者工具 → 导入项目 → 选择本仓库 `miniprogram/` 目录。
+1. 微信开发者工具 → 导入项目 → **选择本仓库根目录 `jp-miniprogram/`**（不要选里面的 `miniprogram/` 子目录）。
+   - 根目录的 `project.config.json` 已配好 `miniprogramRoot: "miniprogram/"` 与 `cloudfunctionRoot: "cloudfunctions/"`，云函数才能一并上传。
 2. 填一个**个人小程序 AppID**（或用测试号，但测试号不支持同声传译插件发音）。
 3. 直接编译运行：启动页点「开始学习」→ 背词（听音选义）→ 看积分/连续/日历。
 4. 「我的」页可一键「重置试玩进度」。
 
-> 发音：默认依赖「微信同声传译」插件（后台添加 WechatSI）。未加插件时自动降级为静音，学习流程不受影响，方便先试玩。
+> **如果工具报「未找到 game.json」**：说明项目被识别成了小游戏。检查 `project.config.json` 里 `compileType` 必须是 `"miniprogram"`（不是 `"game"`），且导入路径为仓库根目录。
+
+> 发音：默认依赖「微信同声传译」插件。为保证未申请插件时也能编译通过，`app.json` **默认不声明** plugins，`audio.js` 以 `requirePlugin` 动态加载、失败自动降级为静音，学习流程不受影响。
+> 想开启发音：mp 后台 → 设置 → 第三方设置 → 插件管理 → 添加「微信同声传译」(WechatSI) → 再把 `docs/启用发音插件-参考.json` 里的 `plugins` 字段合并进 `app.json` 顶层。
 
 ## 切换到云端模式（上线前）
 见 `docs/日语学习小程序-工程list.md` 第 5 节：注册个人小程序账号 → 加同声传译插件 → 开通云开发 → 在 `app.js` 把 `mode` 改为 `'cloud'` 并填 `env` → 上传 4 个云函数 → 建集合（users/userWords/streaks/pointsLedger/dailyLogs）。
