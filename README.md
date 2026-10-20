@@ -27,28 +27,27 @@ jp-miniprogram/
 
 ## 快速开始（本地试玩，0 配置）
 
-### ⚠️ 导入前必读：项目类型必须是「小程序」
+### ⚠️ 导入前必读：AppID 必须是「小程序」类型（否则报 game.json）
 
-微信开发者工具会把**项目类型记进自己的本地缓存**，一旦某次导入时被识别成「小游戏」，
-之后无论怎么改 `project.config.json`、怎么重新编译，它都会按小游戏去找 `game.json` 并报：
+报错 `[app.json 文件内容错误] game.json: 未找到...` 的根因**不是**本地配置、也不是缓存，
+而是 **AppID 在微信公众平台被登记成了「小游戏」**。开发者工具会向服务端拉取 AppID 的类型，
+小游戏类型会强制按 `miniprogram/game.json` 解析（小游戏的入口文件），与本地
+`project.config.json` 的 `"compileType":"miniprogram"` 无关——所以清缓存、重导、改文件都无效。
 
-```
-[app.json 文件内容错误] game.json: 未找到 game.json 文件，或者文件读取失败
-```
+本仓库 `project.config.json` 的 `compileType` 已固定为 `miniprogram`，结构正确无需改动。
 
-本仓库的 `project.config.json` 已固定为 `"compileType": "miniprogram"`，
-`miniprogram/` 子目录下**不再保留任何 config**（避免两个权威源打架）。
+**二选一即可打开试玩：**
+- 方案 A（最快，推荐先试玩）：导入时 AppID 一栏选 **「测试号 / 不使用 AppID」**。
+  这会绕过服务端 AppID 类型校验，工具按本地 `miniprogram` 编译、直接找 `app.json`，不再报 game.json。
+  本地试玩模式（`app.js` 中 `mode:'local'`）下完全够用。
+- 方案 B（正式联调 / 上云函数）：到 mp.weixin.qq.com 注册或换用一个**小程序** AppID
+  （小游戏 AppID 无法改成小程序，只能新建），把根 `project.config.json` 的 `appid` 改成新的再导入。
+  注意：云开发、同声传译插件都要绑在**小程序** AppID 下。
 
-**正确导入流程**
-1. 完全退出微信开发者工具（关窗口 + 右下角托盘图标右键 → 退出）。
-2. 运行 `tools/reset-devtools-cache.ps1` 清掉工具的项目列表缓存（脚本会先自动备份，可回滚；只动 UI 缓存，**不碰登录态**）。
-   - 若不便执行脚本，等价的手动做法：开发者工具「项目列表」里右键该项目 → **删除项目**，然后重新导入。
-3. 重新打开工具 → 导入项目 → **选仓库根目录 `jp-miniprogram/`**（不要选 `miniprogram/` 子目录）。
-4. 填 AppID → 编译。启动页点「开始学习」→ 听音选义背词 → 看积分/连续/日历。
-5. 「我的」页可一键「重置试玩进度」。
-
-> 若仍报同样错误：把 `project.config.json` 里的 `compileType` 确认是 `"miniprogram"`（不是 `"game"`），
-> 然后**彻底退出工具再重开**（工具只在启动时重读项目类型）。
+**导入流程**
+1. 微信开发者工具 → 导入项目 → 选**仓库根目录 `jp-miniprogram/`**（含 `project.config.json` 那层，勿选 `miniprogram/` 子目录）。
+2. AppID 填「测试号」或你的小程序 AppID。
+3. 编译 → 启动页「开始学习」→ 听音选义背词 → 看积分/连续/日历。「我的」页可重置试玩进度。
 
 > 发音：默认依赖「微信同声传译」插件。为保证未申请插件时也能编译通过，`app.json` **默认不声明** plugins，
 > `audio.js` 以 `requirePlugin` 动态加载、失败自动降级为静音，学习流程不受影响。
