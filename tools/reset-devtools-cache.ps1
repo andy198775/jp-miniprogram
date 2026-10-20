@@ -42,6 +42,23 @@ foreach ($root in $roots) {
 }
 $leveldbDirs = $leveldbDirs | Sort-Object -Unique
 
+# Also clear WeappLocalData (project list + compileType cache) and the editor
+# workspaceStorage (recently opened folders). The "game.json" bug is caused by a
+# stale compileType:"game" record stored in WeappLocalData\localstorage_*.json,
+# plus a wrong recent entry pointing at the inner miniprogram/ subfolder.
+foreach ($root in $roots) {
+    if (-not (Test-Path $root)) { continue }
+    foreach ($name in @($zhName, $enName)) {
+        $base = Join-Path $root $name
+        if (Test-Path $base) {
+            Get-ChildItem -Path $base -Recurse -Directory -ErrorAction SilentlyContinue |
+                Where-Object { $_.Name -eq 'WeappLocalData' -or $_.Name -eq 'workspaceStorage' } |
+                ForEach-Object { $leveldbDirs += $_.FullName }
+        }
+    }
+}
+$leveldbDirs = $leveldbDirs | Sort-Object -Unique
+
 Write-Host '== WeChat DevTools cache reset ==' -ForegroundColor Cyan
 
 # DevTools main process is named (Chinese) weixin kaifa zhe gongju.
@@ -67,8 +84,8 @@ foreach ($d in $leveldbDirs) { Write-Host ('    - ' + $d) -ForegroundColor DarkG
 foreach ($ldb in $leveldbDirs) {
     $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
     $backup = ($ldb + '.bak-' + $stamp)
-    Copy-Item -Path $ldb -Destination $backup -Recurse -Force
-    Get-ChildItem -Path $ldb -Force | Remove-Item -Recurse -Force
+    Copy-Item -Path $ldb -Destination $backup -Recurse -Force -ErrorAction SilentlyContinue
+    Get-ChildItem -Path $ldb -Force -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
     Write-Host ('[ok] cleared + backed up: ' + $ldb) -ForegroundColor Green
     Write-Host ('     backup: ' + $backup) -ForegroundColor DarkGray
 }
