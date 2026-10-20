@@ -14,6 +14,7 @@
 - [x] Git 仓库初始化 + 两机同步规范 + 本看板 — 2026-10-19
 - [x] GitHub 远程已连接并**推送成功**：`origin=https://github.com/andy198775/jp-miniprogram.git`，分支 `main`，4 提交全部上线（`origin/main` = c8061fe）— 2026-10-19
 - [x] **小游戏框架 + 本地试玩 demo**：新增 `utils/dataService.js` 统一数据层（本地 localStorage 模式默认开箱即玩，云端模式委托云函数）；6 页面全部改走 dataService；`app.js` 加 `mode` 开关；首页/我的页加本地试玩标识与重置按钮；补全局样式 — 2026-10-19
+- [x] **修复开发者工具报错「未找到 game.json」**：内层 `miniprogram/project.config.json` 的 `compileType` 由 `game` 改回 `miniprogram`、补 `miniprogram/sitemap.json`、移除 `app.json` 中未授权的 WechatSI 插件声明（改为动态 requirePlugin 降级）— 2026-10-20
 
 ### 进行中 / 待办（按实现顺序）
 - [ ] **联调验证①**：注册个人小程序账号、后台加「微信同声传译」插件、开通云开发、填环境 ID、上传 4 个云函数、建 5 集合（users/userWords/streaks/pointsLedger/dailyLogs），编译跑通登录→背词→积分→日历
