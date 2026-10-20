@@ -26,15 +26,32 @@ jp-miniprogram/
 ```
 
 ## 快速开始（本地试玩，0 配置）
-1. 微信开发者工具 → 导入项目 → **选择本仓库根目录 `jp-miniprogram/`**（不要选里面的 `miniprogram/` 子目录）。
-   - 根目录的 `project.config.json` 已配好 `miniprogramRoot: "miniprogram/"` 与 `cloudfunctionRoot: "cloudfunctions/"`，云函数才能一并上传。
-2. 填一个**个人小程序 AppID**（或用测试号，但测试号不支持同声传译插件发音）。
-3. 直接编译运行：启动页点「开始学习」→ 背词（听音选义）→ 看积分/连续/日历。
-4. 「我的」页可一键「重置试玩进度」。
 
-> **如果工具报「未找到 game.json」**：说明项目被识别成了小游戏。检查 `project.config.json` 里 `compileType` 必须是 `"miniprogram"`（不是 `"game"`），且导入路径为仓库根目录。
+### ⚠️ 导入前必读：项目类型必须是「小程序」
 
-> 发音：默认依赖「微信同声传译」插件。为保证未申请插件时也能编译通过，`app.json` **默认不声明** plugins，`audio.js` 以 `requirePlugin` 动态加载、失败自动降级为静音，学习流程不受影响。
+微信开发者工具会把**项目类型记进自己的本地缓存**，一旦某次导入时被识别成「小游戏」，
+之后无论怎么改 `project.config.json`、怎么重新编译，它都会按小游戏去找 `game.json` 并报：
+
+```
+[app.json 文件内容错误] game.json: 未找到 game.json 文件，或者文件读取失败
+```
+
+本仓库的 `project.config.json` 已固定为 `"compileType": "miniprogram"`，
+`miniprogram/` 子目录下**不再保留任何 config**（避免两个权威源打架）。
+
+**正确导入流程**
+1. 完全退出微信开发者工具（关窗口 + 右下角托盘图标右键 → 退出）。
+2. 运行 `tools/reset-devtools-cache.ps1` 清掉工具的项目列表缓存（脚本会先自动备份，可回滚；只动 UI 缓存，**不碰登录态**）。
+   - 若不便执行脚本，等价的手动做法：开发者工具「项目列表」里右键该项目 → **删除项目**，然后重新导入。
+3. 重新打开工具 → 导入项目 → **选仓库根目录 `jp-miniprogram/`**（不要选 `miniprogram/` 子目录）。
+4. 填 AppID → 编译。启动页点「开始学习」→ 听音选义背词 → 看积分/连续/日历。
+5. 「我的」页可一键「重置试玩进度」。
+
+> 若仍报同样错误：把 `project.config.json` 里的 `compileType` 确认是 `"miniprogram"`（不是 `"game"`），
+> 然后**彻底退出工具再重开**（工具只在启动时重读项目类型）。
+
+> 发音：默认依赖「微信同声传译」插件。为保证未申请插件时也能编译通过，`app.json` **默认不声明** plugins，
+> `audio.js` 以 `requirePlugin` 动态加载、失败自动降级为静音，学习流程不受影响。
 > 想开启发音：mp 后台 → 设置 → 第三方设置 → 插件管理 → 添加「微信同声传译」(WechatSI) → 再把 `docs/启用发音插件-参考.json` 里的 `plugins` 字段合并进 `app.json` 顶层。
 
 ## 切换到云端模式（上线前）
