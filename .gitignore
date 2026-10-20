@@ -1,10 +1,10 @@
 # ===== 微信开发者工具 =====
-# 项目配置以仓库根目录的 project.config.json 为唯一权威；
-# miniprogram/ 子目录下的 config 由开发者工具自动生成，不入库。
+# 根目录 project.config.json = 唯一权威(声明 miniprogramRoot/cloudfunctionRoot/appid 等)。
+# miniprogram/project.config.json = 修复 game.json 误判的关键文件(声明子目录自身 compileType=miniprogram)，必须入库！
+# 仅 project.private.config.json(工具自动生成)不入库。
 project.config.json
 !project.config.json
 project.private.config.json
-miniprogram/project.config.json
 miniprogram/project.private.config.json
 miniprogram_npm/
 node_modules/
