@@ -18,6 +18,8 @@
 - [x] **缓存层 game 类型已实际根除（2026-10-20）**：确认工程文件 100% 正确（根 config=miniprogram、miniprogram/ 下无任何 config、project.private.config.json 无 compileType）；`WeChatAppEx.exe` 是**微信桌面版(Weixin)** 的子进程、与开发者工具无关，开发者工具主进程名为 `微信开发者工具`；已关闭开发者工具主进程并运行 `reset-devtools-cache.ps1` 清空全部 12 个 leveldb 缓存库（含时间戳自动备份，可回滚）。
 - [x] **game.json 误判·最终根因（2026-10-20 17:50，用 `app.asar` 源码确认·已推翻前几轮误诊）**：清缓存、删/改内层 `project.config.json` 均**非根因**。决定性链路：`getAppJSON` 用 `attr.gameApp` 决定读 `game.json` 还是 `app.json`；`attr.gameApp` 来自 `getAppIdAndAttr` 向**微信服务端**拉的 appid 类型（服务端拉取成功才生效；本地 `compileType:"miniprogram"` 只在拉取失败兜底、且本应为 false→正常）。清缓存 + 重导根目录仍报 `miniprogram/game.json` → 服务端返回 `gameApp:true` → **appid `wxd061bf25698f7291` 在公众平台被登记成「小游戏」而非「小程序」**。本地 `project.config.json` 的 `compileType:"miniprogram"` 始终正确。修复：① 本地试玩用「测试号/无AppID」导入即可绕过；② 正式联调/上云函数须到 mp.weixin.qq.com 注册或换一个**小程序** appid（小游戏 appid 无法转小程序），更新根 `project.config.json` 的 appid 后重导；③ 已撤回误加的 `miniprogram/project.config.json`（源码证明 `getProjectConfigJSON` 只读根目录配置，内层 config 对类型判定无效），并复原 .gitignore。
 
+- [x] **M1-6 入门课程模块（五十音图 + 常用语 + 学习路径）—— 2026-10-21**：新增 `data/kana.js`（清音46/浊音/半浊音/拗音，含平假名+片假名+罗马音）与 `data/phrases.js`（32 条儿童常用语）；新增 `pages/kana`（图表浏览点假名听音 + 拼读练习听音选罗马音 + 掌握进度存 `jp_kana_progress`）、`pages/phrase`（列表听音+标记已会+听音选中文测验，进度存 `jp_phrase_progress`）；首页 `home` 加「学习课程」三卡入口（五十音图/N5词汇/常用语），N5 卡按"掌握≥40假名"软解锁（未解锁点仍有 toast 引导但不阻断）；`app.json` 注册两页、`app.wxss` 加 `.courses` 样式。复用 `audio.speak`，未改 dataService/learn/review，风险隔离。已提交并 push（`48999e8`）。
+
 ### 进行中 / 待办（按实现顺序）
 - [ ] **联调验证①**：注册个人小程序账号、后台加「微信同声传译」插件、开通云开发、填环境 ID、上传 4 个云函数、建 5 集合（users/userWords/streaks/pointsLedger/dailyLogs），编译跑通登录→背词→积分→日历
 - [ ] **联调验证②**：真机测同声传译 `lang=ja_JP`（个别版本 `ja`），确认日语发音正常
