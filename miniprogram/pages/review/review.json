@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "复习"
+  "navigationBarTitleText": "复习",
+  "usingComponents": {
+    "ach-pop": "/components/ach-pop/ach-pop"
+  }
 }

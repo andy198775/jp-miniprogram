@@ -104,6 +104,12 @@ Page({
             learnedTotal: p.learnedTotal
           }
         });
+        if (p.newAch && p.newAch.length) {
+          const pop = this.selectComponent('#achPop');
+          if (pop) pop.show(p.newAch);
+          const cheers = ['すごい', 'やった', 'がんばって'];
+          audio.speak(cheers[Math.floor(Math.random() * cheers.length)]);
+        }
       })
       .catch((err) => {
         wx.hideLoading();

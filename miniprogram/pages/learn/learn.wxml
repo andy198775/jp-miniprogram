@@ -46,3 +46,5 @@
   </view>
   <button class="btn-primary" bindtap="backHome">回到首页</button>
 </view>
+
+<ach-pop id="achPop" />

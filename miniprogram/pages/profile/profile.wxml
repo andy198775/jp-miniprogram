@@ -24,13 +24,14 @@
   </view>
 
   <view class="card">
-    <view class="title">成就</view>
+    <view class="title">成就 {{unlockedCount}} / {{achievements.length}}</view>
     <view
       wx:for="{{achievements}}"
       wx:key="name"
       class="ach {{item.got ? 'got' : ''}}">
-      <view class="ach-name">{{item.got ? '🏅' : '🔒'}} {{item.name}}</view>
+      <view class="ach-name">{{item.got ? item.icon : '🔒'}} {{item.name}}</view>
       <view class="subtitle">{{item.desc}}</view>
+      <view class="ach-date" wx:if="{{item.unlockedAt}}">🗓 {{item.unlockedAt}}</view>
     </view>
   </view>
 

@@ -1,0 +1,58 @@
+.ach-mask {
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(58, 46, 37, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.ach-card {
+  position: relative;
+  width: 560rpx;
+  background: linear-gradient(160deg, #FFF3E6, #FFE0C2);
+  border-radius: 32rpx;
+  padding: 56rpx 40rpx 48rpx;
+  text-align: center;
+  box-shadow: 0 16rpx 48rpx rgba(255, 140, 66, 0.4);
+  animation: ach-pop-bounce 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+.ach-icon {
+  font-size: 120rpx;
+  line-height: 1;
+}
+.ach-tag {
+  margin-top: 24rpx;
+  font-size: 26rpx;
+  color: #FF8C42;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+.ach-name {
+  margin-top: 8rpx;
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #3A2E25;
+}
+.ach-desc {
+  margin-top: 12rpx;
+  font-size: 28rpx;
+  color: #9b8579;
+}
+.ach-sparkle {
+  position: absolute;
+  font-size: 40rpx;
+  animation: ach-spin 2.4s linear infinite;
+}
+.ach-sparkle-1 { top: 36rpx; left: 40rpx; }
+.ach-sparkle-2 { bottom: 40rpx; right: 44rpx; font-size: 32rpx; }
+
+@keyframes ach-pop-bounce {
+  0%   { transform: scale(0.4); opacity: 0; }
+  60%  { transform: scale(1.12); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes ach-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

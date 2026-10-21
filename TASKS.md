@@ -24,7 +24,7 @@
 - [ ] **联调验证①**：注册个人小程序账号、后台加「微信同声传译」插件、开通云开发、填环境 ID、上传 4 个云函数、建 5 集合（users/userWords/streaks/pointsLedger/dailyLogs），编译跑通登录→背词→积分→日历
 - [ ] **联调验证②**：真机测同声传译 `lang=ja_JP`（个别版本 `ja`），确认日语发音正常
 - [x] **M1-5 复习页**：`pages/review` 已建，调用 getDailyTask 取 dueIds 做专注复习，复用听音选义 + SM-2（代码完成，待真机联调）— 2026-10-19
-- [ ] **M1-8 成就墙**：profile 已展示成就列表，待补"解锁时弹窗/动画"增强正反馈
+- [x] **M1-8 成就墙弹窗动画（正反馈增强）—— 2026-10-21**：抽离 `data/achievements.js`（9 个成就，含新增「初次启程 / 全对王」）；`dataService.completeStudy` 用"学习前/后快照 diff"检测新解锁成就并返回 `newAch`、持久化解锁日期到 `jp_ach`；新增全局组件 `components/ach-pop`（排队弹出 + 弹跳动画 + 自动消失）；`learn/review` 完成回调接弹窗并随机播鼓励语（すごい / やった / がんばって，已生成 mp3）；`profile` 成就墙加 X/Y 进度与解锁日期、改用统一 computeAch。纯前端，测试号可验证。
 - [ ] **打磨**：每日新词数 NEW_PER_DAY 调参、题型手感、断签/连续边界
 
 ### 后续扩充内容（在 demo 框架上叠加，按优先级）

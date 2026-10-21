@@ -1,0 +1,10 @@
+<view wx:if="{{visible && current}}" class="ach-mask">
+  <view class="ach-card">
+    <view class="ach-sparkle ach-sparkle-1">✨</view>
+    <view class="ach-sparkle ach-sparkle-2">⭐</view>
+    <view class="ach-icon">{{current.icon}}</view>
+    <view class="ach-tag">解锁新成就</view>
+    <view class="ach-name">{{current.name}}</view>
+    <view class="ach-desc">{{current.desc}}</view>
+  </view>
+</view>

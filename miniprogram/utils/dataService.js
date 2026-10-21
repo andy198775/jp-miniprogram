@@ -6,11 +6,13 @@
 const cloud = require('./cloud.js');
 const srs = require('./srs.js');
 const { WORDS, NEW_PER_DAY } = require('../data/words.js');
+const { computeAch } = require('../data/achievements.js');
 
 const KEY_USER = 'jp_user';
 const KEY_WORDS = 'jp_userWords';
 const KEY_DAYS = 'jp_dailyLogs';
 const KEY_META = 'jp_meta';
+const KEY_ACH = 'jp_ach'; // 成就解锁日期：{ [achId]: 'YYYY-MM-DD' }
 
 function getMode() {
   const app = getApp();
@@ -44,6 +46,7 @@ function ensureUser() {
       streakCurrent: 0,
       streakLongest: 0,
       learnedTotal: 0,
+      everAllCorrect: false,
       lastStudyDate: '',
       createdAt: Date.now()
     };
@@ -76,6 +79,13 @@ function handleCompleteStudy(data) {
   const user = ensureUser();
   const days = wx.getStorageSync(KEY_DAYS) || {};
   const today = todayStr();
+
+  // 快照「本次学习前」的成就状态，用于计算新解锁（避免重复弹窗）
+  const before = {
+    learnedTotal: user.learnedTotal || 0,
+    streakCurrent: user.streakCurrent || 0,
+    everAllCorrect: !!user.everAllCorrect
+  };
 
   let earned = 0;
   let correctCount = 0;
@@ -113,8 +123,11 @@ function handleCompleteStudy(data) {
     if (user.streakCurrent > user.streakLongest) user.streakLongest = user.streakCurrent;
   }
 
-  // 全对奖励
-  if (answers.length && correctCount === answers.length) earned += 20;
+  // 全对奖励 + 成就标志
+  if (answers.length && correctCount === answers.length) {
+    earned += 20;
+    user.everAllCorrect = true;
+  }
 
   user.points = (user.points || 0) + earned;
   user.learnedTotal = Object.keys(map).length;
@@ -129,14 +142,34 @@ function handleCompleteStudy(data) {
   days[today] = dlog;
   wx.setStorageSync(KEY_DAYS, days);
 
+  // 计算本次新解锁的成就，并持久化解锁日期（供「我的」页展示）
+  const after = {
+    learnedTotal: user.learnedTotal,
+    streakCurrent: user.streakCurrent,
+    everAllCorrect: !!user.everAllCorrect
+  };
+  const newAch = diffAch(before, after);
+  if (newAch.length) {
+    const achMap = wx.getStorageSync(KEY_ACH) || {};
+    newAch.forEach((a) => { achMap[a.id] = today; });
+    wx.setStorageSync(KEY_ACH, achMap);
+  }
+
   return {
     earned,
     points: user.points,
     streakCurrent: user.streakCurrent,
     streakLongest: user.streakLongest,
     learnedTotal: user.learnedTotal,
-    todayDone: true
+    todayDone: true,
+    newAch
   };
+}
+
+// 计算两次成就快照之间「新解锁」的成就列表
+function diffAch(before, after) {
+  const gotBefore = new Set(computeAch(before).filter((a) => a.got).map((a) => a.id));
+  return computeAch(after).filter((a) => a.got && !gotBefore.has(a.id));
 }
 
 function handleGetProgress() {
@@ -149,6 +182,8 @@ function handleGetProgress() {
     streakCurrent: user.streakCurrent || 0,
     streakLongest: user.streakLongest || 0,
     learnedTotal: user.learnedTotal || 0,
+    everAllCorrect: !!user.everAllCorrect,
+    unlockedAch: wx.getStorageSync(KEY_ACH) || {},
     days,
     todayDone
   };
@@ -159,6 +194,7 @@ function resetAll() {
   wx.removeStorageSync(KEY_WORDS);
   wx.removeStorageSync(KEY_DAYS);
   wx.removeStorageSync(KEY_META);
+  wx.removeStorageSync(KEY_ACH);
   wx.removeStorageSync('openid');
 }
 

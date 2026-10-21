@@ -100,4 +100,5 @@ page {
 .c-name { font-size: 28rpx; font-weight: 600; margin-top: 8rpx; color: #3A2E25; }
 .c-prog { font-size: 22rpx; color: #9b8579; margin-top: 6rpx; }
 .ach-name { font-size: 30rpx; font-weight: 600; }
+.ach-date { font-size: 22rpx; color: #FF8C42; margin-top: 6rpx; }
 

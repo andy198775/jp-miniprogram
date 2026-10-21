@@ -162,6 +162,7 @@ def main():
     ap.add_argument("--tld", default="com", help="gtts 域名")
     ap.add_argument("--probe", action="store_true", help="仅探测腾讯云日语音色后退出")
     ap.add_argument("--proxy", default=None, help="强制走指定代理，如 http://127.0.0.1:7890（绕过环境自带代理）")
+    ap.add_argument("--input", default=None, help="指定输入字符串 json（默认 tts_strings.json）")
     args = ap.parse_args()
 
     if args.proxy:
@@ -169,6 +170,9 @@ def main():
             os.environ[k] = args.proxy
 
     ensure_dir()
+    global STRINGS_FILE
+    if args.input:
+        STRINGS_FILE = args.input
     strings = load_strings()
     print(f"待合成字符串数: {len(strings)}")
 
