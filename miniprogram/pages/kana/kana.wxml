@@ -1,0 +1,75 @@
+<view class="container">
+  <view class="badge" wx:if="{{mode === 'local'}}">🧪 本地试玩模式（无需联网/后端）</view>
+
+  <view class="seg">
+    <view class="seg-item {{tab === 'chart' ? 'on' : ''}}" data-tab="chart" bindtap="switchTab">图表浏览</view>
+    <view class="seg-item {{tab === 'quiz' ? 'on' : ''}}" data-tab="quiz" bindtap="switchTab">拼读练习</view>
+  </view>
+
+  <view class="subtitle center">已掌握 {{masteredCount}} / {{totalAll}} 个假名</view>
+
+  <!-- 图表浏览 -->
+  <block wx:if="{{tab === 'chart'}}">
+    <view class="card" wx:for="{{groups}}" wx:for-item="g" wx:key="type">
+      <view class="gtitle">{{g.type}}</view>
+      <view class="krow" wx:for="{{g.rows}}" wx:for-item="row" wx:key="label">
+        <view class="klabel">{{row.label}}</view>
+        <view class="kgrid">
+          <view
+            wx:for="{{row.items}}"
+            wx:for-item="it"
+            wx:key="k"
+            class="kcell {{it.empty ? 'empty' : ''}}"
+            data-k="{{it.k}}"
+            bindtap="playKana">
+            <block wx:if="{{!it.empty}}">
+              <view class="kk">{{it.k}}</view>
+              <view class="kh">{{it.h}}</view>
+              <view class="kr">{{it.r}}</view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="subtitle center">点任意假名，听一听它的发音 👆</view>
+  </block>
+
+  <!-- 拼读练习 -->
+  <block wx:elif="{{tab === 'quiz'}}">
+    <block wx:if="{{!quizDone}}">
+      <view class="subtitle">第 {{idx + 1}} / {{roundTotal}} 个</view>
+      <view class="card center">
+        <view class="kana">{{cur.k}}</view>
+        <view class="subtitle">{{cur.h}}</view>
+        <button class="btn-ghost" style="margin-top:16rpx" bindtap="playCur">🔊 听发音</button>
+      </view>
+
+      <view class="subtitle center">选一选它的罗马音</view>
+      <view class="opts">
+        <button
+          wx:for="{{options}}"
+          wx:key="*this"
+          class="opt {{answered ? (item === cur.r ? 'ok' : (item === picked ? 'no' : '')) : ''}}"
+          data-r="{{item}}"
+          bindtap="choose"
+          disabled="{{answered}}">{{item}}</button>
+      </view>
+
+      <view wx:if="{{answered}}" class="center" style="margin-top:16rpx">
+        <view class="hl" wx:if="{{correct}}">✅ 答对啦！</view>
+        <view wx:else>再听一次，想一想～ 正确答案：{{cur.r}}</view>
+        <button class="btn-primary" style="margin-top:16rpx" bindtap="next">下一个</button>
+      </view>
+    </block>
+
+    <view class="container center" wx:else>
+      <view class="title">这一轮练完啦！🎉</view>
+      <view class="card">
+        <view class="row"><text>本轮得分</text><text class="hl">+{{score}}</text></view>
+        <view class="row"><text>累计掌握</text><text class="hl">{{masteredCount}} / {{totalAll}}</text></view>
+      </view>
+      <button class="btn-primary" style="margin-top:20rpx" bindtap="again">再来一轮</button>
+      <button class="btn-ghost" style="margin-top:16rpx" bindtap="backHome">回到首页</button>
+    </view>
+  </block>
+</view>

@@ -82,5 +82,22 @@ page {
 /* 成就 */
 .ach { background: #FFF3E6; border-radius: 16rpx; padding: 18rpx 22rpx; margin: 14rpx 0; opacity: 0.55; }
 .ach.got { opacity: 1; border: 2rpx solid #FF8C42; }
+
+/* 首页课程入口 */
+.courses { display: flex; margin-top: 16rpx; }
+.course {
+  flex: 1;
+  background: #FFF3E6;
+  border-radius: 18rpx;
+  padding: 22rpx 10rpx;
+  margin: 0 8rpx;
+  text-align: center;
+}
+.course:first-child { margin-left: 0; }
+.course:last-child { margin-right: 0; }
+.course.locked { opacity: 0.55; }
+.c-emoji { font-size: 48rpx; }
+.c-name { font-size: 28rpx; font-weight: 600; margin-top: 8rpx; color: #3A2E25; }
+.c-prog { font-size: 22rpx; color: #9b8579; margin-top: 6rpx; }
 .ach-name { font-size: 30rpx; font-weight: 600; }
 

@@ -12,11 +12,34 @@
     </view>
   </view>
 
+  <!-- 学习课程入口 -->
+  <view class="card">
+    <view class="title">学习课程</view>
+    <view class="subtitle">建议先从「五十音图」开始，熟悉拼读后再进入 N5 词汇 👇</view>
+    <view class="courses">
+      <view class="course" bindtap="goKana">
+        <view class="c-emoji">🔤</view>
+        <view class="c-name">五十音图</view>
+        <view class="c-prog">已掌握 {{kanaMastered}}/{{kanaTotal}}</view>
+      </view>
+      <view class="course {{kanaReady ? '' : 'locked'}}" bindtap="goLearn">
+        <view class="c-emoji">📚</view>
+        <view class="c-name">N5 词汇</view>
+        <view class="c-prog">{{kanaReady ? '已解锁 ✅' : '先学完五十音图 🔒'}}</view>
+      </view>
+      <view class="course" bindtap="goPhrase">
+        <view class="c-emoji">💬</view>
+        <view class="c-name">常用语</view>
+        <view class="c-prog">已会 {{phraseLearned}}/{{phraseTotal}}</view>
+      </view>
+    </view>
+  </view>
+
   <view class="card">
     <view class="title">今日任务</view>
     <view class="subtitle" wx:if="{{todayDone}}">✅ 今天已经学过啦，可以继续复习或再学一轮</view>
     <view class="subtitle" wx:else>新词 {{newCount}} 个 · 复习 {{reviewCount}} 个</view>
-    <button class="btn-primary" style="margin-top:20rpx" bindtap="goLearn">去学习</button>
+    <button class="btn-primary" style="margin-top:20rpx" bindtap="goStart">开始学习</button>
     <button class="btn-ghost" style="margin-top:16rpx" bindtap="goReview" wx:if="{{reviewCount > 0}}">📝 复习 {{reviewCount}} 个</button>
   </view>
 

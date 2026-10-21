@@ -1,0 +1,60 @@
+/* 分段切换 */
+.seg {
+  display: flex;
+  background: #fff;
+  border-radius: 999rpx;
+  padding: 8rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 6rpx 20rpx rgba(255, 140, 66, 0.12);
+}
+.seg-item {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  font-size: 30rpx;
+  color: #9b8579;
+  border-radius: 999rpx;
+}
+.seg-item.on {
+  background: #FF8C42;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 常用语列表项 */
+.phrase {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pleft {
+  flex: 1;
+}
+.pjp {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #3A2E25;
+}
+.pright {
+  text-align: right;
+  margin-left: 16rpx;
+}
+.pcn {
+  font-size: 28rpx;
+  color: #9b8579;
+  margin-bottom: 10rpx;
+}
+.tag {
+  font-size: 24rpx;
+  padding: 10rpx 22rpx;
+  border-radius: 999rpx;
+  background: #FFF3E6;
+  color: #FF8C42;
+  border: 2rpx solid #FFD8B0;
+}
+.tag::after { border: none; }
+.tag.got {
+  background: #D7F5DD;
+  color: #1E7E34;
+  border-color: #34C759;
+}

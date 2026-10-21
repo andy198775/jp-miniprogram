@@ -1,0 +1,73 @@
+/* 分段切换 */
+.seg {
+  display: flex;
+  background: #fff;
+  border-radius: 999rpx;
+  padding: 8rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 6rpx 20rpx rgba(255, 140, 66, 0.12);
+}
+.seg-item {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  font-size: 30rpx;
+  color: #9b8579;
+  border-radius: 999rpx;
+}
+.seg-item.on {
+  background: #FF8C42;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 五十音图表 */
+.gtitle {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #FF8C42;
+  margin-bottom: 12rpx;
+}
+.krow {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 12rpx;
+}
+.klabel {
+  width: 56rpx;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #FF8C42;
+  font-weight: 700;
+}
+.kgrid {
+  flex: 1;
+  display: flex;
+}
+.kcell {
+  flex: 1;
+  background: #FFF3E6;
+  border-radius: 14rpx;
+  margin: 0 5rpx;
+  padding: 10rpx 0;
+  text-align: center;
+}
+.kcell.empty {
+  background: transparent;
+}
+.kk {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #3A2E25;
+}
+.kh {
+  font-size: 22rpx;
+  color: #9b8579;
+}
+.kr {
+  font-size: 20rpx;
+  color: #FF8C42;
+}
