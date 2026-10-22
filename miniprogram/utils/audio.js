@@ -60,4 +60,43 @@ function speak(text, file) {
   });
 }
 
-module.exports = { speak };
+// —— 语音识别（跟读评测用）——
+// 自动判断发音需要 ASR。提供两条路径：
+//   1) 优先用「微信同声传译」插件的录音识别管理器（正式小程序 AppID + 后台加插件后自动可用）
+//   2) 测试号/无插件时，可配置一个本地代理（tools/asr_proxy.js）走腾讯云 ASR，实现真·自动判断
+//   3) 两者皆无 → 调用方降级为「录下来回放 + 孩子/家长自判」
+let asrProxy = '';
+function setAsrProxy(url) { asrProxy = (url || '').trim(); }
+
+// 返回插件录音识别管理器；插件不存在时返回 null
+function getRecognitionManager() {
+  try {
+    if (plugin && plugin.getRecordRecognitionManager) {
+      return plugin.getRecordRecognitionManager();
+    }
+  } catch (e) { /* ignore */ }
+  return null;
+}
+
+// 走本地代理做识别：把录音 base64 发给代理，代理调腾讯云 ASR 返回文本
+function recognizeByProxy(base64Audio, format) {
+  return new Promise((resolve, reject) => {
+    if (!asrProxy) { reject(new Error('未配置 ASR 代理')); return; }
+    wx.request({
+      url: asrProxy,
+      method: 'POST',
+      timeout: 15000,
+      data: { audio: base64Audio, format: format || 'mp3' },
+      success: (res) => {
+        if (res.statusCode === 200 && res.data && res.data.text) {
+          resolve(res.data.text);
+        } else {
+          reject(new Error('ASR 返回异常: ' + JSON.stringify(res.data)));
+        }
+      },
+      fail: (e) => reject(e)
+    });
+  });
+}
+
+module.exports = { speak, setAsrProxy, getRecognitionManager, recognizeByProxy };

@@ -1,0 +1,42 @@
+<view class="container">
+  <view class="topbar">
+    <view class="back" bindtap="goBack">‹ 返回</view>
+    <view class="mode" bindtap="setProxy">⚙️ {{modeText}}</view>
+  </view>
+
+  <view class="card target-card">
+    <view class="type-label">{{typeLabel}}</view>
+    <view class="target">{{target}}</view>
+    <view class="roma">{{roma}}</view>
+    <button class="btn-demo" bindtap="playDemo">🔊 听示范</button>
+  </view>
+
+  <view class="card record-card">
+    <view wx:if="{{!recording}}" class="mic-btn" bindtap="toggleRecord">🎤<view class="mic-tip">点我开始读</view></view>
+    <view wx:else class="mic-btn recording" bindtap="toggleRecord">⏹<view class="mic-tip">点我停止</view></view>
+    <view class="subtitle center">读给手机听，它会帮你判断对不对</view>
+  </view>
+
+  <!-- 结果区 -->
+  <view class="card result-card" wx:if="{{showResult}}">
+    <view class="verdict {{result.ok === true ? 'ok' : (result.ok === false ? 'no' : 'neutral')}}">
+      <block wx:if="{{result.ok === true}}">🎉 读对啦！</block>
+      <block wx:elif="{{result.ok === false}}">💪 再试一次</block>
+      <block wx:else>🔊 自评一下</block>
+    </view>
+    <view class="msg">{{result.msg}}</view>
+
+    <view wx:if="{{result.ok === null}}" class="manual-row">
+      <button class="btn-ghost" data-ok="1" bindtap="manualJudge">👍 读对了</button>
+      <button class="btn-ghost" data-ok="0" bindtap="manualJudge">💪 再试试</button>
+    </view>
+    <view wx:if="{{childAudio}}" class="playback-row">
+      <button class="btn-ghost" bindtap="playChild">▶️ 听听我读的</button>
+    </view>
+  </view>
+
+  <button class="btn-primary" bindtap="nextWord">➡️ 下一个</button>
+  <view class="subtitle center">已读 {{attempts}} 次 · 读对 {{correct}} 次</view>
+</view>
+
+<ach-pop id="achPop" />

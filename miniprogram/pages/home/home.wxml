@@ -32,6 +32,11 @@
         <view class="c-name">常用语</view>
         <view class="c-prog">已会 {{phraseLearned}}/{{phraseTotal}}</view>
       </view>
+      <view class="course" bindtap="goSpeak">
+        <view class="c-emoji">🎤</view>
+        <view class="c-name">跟我读</view>
+        <view class="c-prog">开口说日语</view>
+      </view>
     </view>
   </view>
 

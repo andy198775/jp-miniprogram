@@ -15,11 +15,14 @@
 jp-miniprogram/
 ├─ miniprogram/          前端（微信小程序原生）
 │  ├─ app.js/json/wxss    app.js 含 mode 开关；app.wxss 含全局样式
-│  ├─ pages/             launch / home / learn / review / calendar / profile
-│  ├─ utils/             dataService(统一数据层) · cloud · audio · srs(SM-2) · store
-│  └─ data/words.js       N5 词库（儿童零基础友好，90 词）
+│  ├─ pages/             launch / home / learn / review / calendar / profile / kana / phrase / speak
+│  ├─ components/ach-pop  全局成就解锁弹窗组件
+│  ├─ utils/             dataService(统一数据层) · cloud · audio(发音+识别双通道) · srs(SM-2) · store
+│  ├─ data/              words.js(N5 词库) · kana.js(五十音图) · phrases.js(常用语) · achievements.js(成就)
+│  └─ audio/             <日语文本>.mp3 本地发音兜底（已生成 208 个）
 ├─ cloudfunctions/       云函数（微信云开发，云端模式使用）
 │  ├─ login / getDailyTask / completeStudy / getProgress
+├─ tools/                gen_audio.py(批量生成发音 mp3) · asr_proxy.js(本地语音识别代理)
 ├─ docs/                 规划与工程清单（同步留存）
 ├─ TASKS.md              任务看板（跨机同步，状态唯一来源）
 └─ 协作同步流程.md        两机协作 + git 同步规范
@@ -84,6 +87,24 @@ jp-miniprogram/
 ### 注意
 - **包体限制**：微信主包 2MB。五十音图约 70 个 + 常用语 30 个 + N5 词 90 个短音频，全放本地可能超主包。建议先放入门必需的（五十音图 + 常用语），N5 词等接插件后再用合成。
 - 文件放 `miniprogram/audio/` 下即可，开发者工具编译后会随包加载。
+
+## 跟我读 · 语音评测（孩子开口说，App 判断对不对）
+
+首页「跟我读」入口 → `pages/speak`：听示范 → 🎤 录音 → 自动/手动判断 → 下一词。
+目标池取自全部单假名 + 短词（kana≤3 字符），适合儿童开口；零失败鼓励设计（读错只说"再试一次💪"，不直接批评）。
+
+**自动判断发音需要语音识别（ASR）**，提供两条自动路径 + 一个降级：
+
+1. **正式账号（最优）**：注册**小程序** AppID + 后台加「微信同声传译」插件 + `app.json` 声明 plugins 后，
+   `audio.js` 的 `getRecognitionManager()` 自动返回插件录音识别管理器，跟读页直接自动判定（与发音同源，免费免后端）。
+2. **本地代理（测试号也能自动判）**：运行 `tools/asr_proxy.js`（腾讯云日语 ASR，纯 Node + TC3 签名、无第三方依赖），
+   跟读页点右上角 ⚙️ 填 `http://127.0.0.1:3000/asr` 即可启用。前提：开发者工具勾「不校验合法域名…」，并设置腾讯云密钥
+   （`TENCENT_SECRET_ID` / `TENCENT_SECRET_KEY`，语音识别有免费额度）。
+   - 启动：`node tools/asr_proxy.js`
+   - ⚠️ 模拟器可访问 `127.0.0.1`；真机预览需改成电脑局域网 IP（如 `http://192.168.x.x:3000/asr`）。
+3. **练习模式（兜底）**：插件与代理都不可用时，自动降级为「回放孩子录音 + 家长/孩子点「读对了 / 再试试」自判」，流程照常不中断。
+
+> 跟读统计累计在 `dataService.speak`：尝试次数、正确次数，并触发新增成就「🎤 勇敢开口（首次跟读）」「🐦 小百灵（读对 10 次）」。
 
 ## 切换到云端模式（上线前）
 见 `docs/日语学习小程序-工程list.md` 第 5 节：注册个人小程序账号 → 加同声传译插件 → 开通云开发 → 在 `app.js` 把 `mode` 改为 `'cloud'` 并填 `env` → 上传 4 个云函数 → 建集合（users/userWords/streaks/pointsLedger/dailyLogs）。

@@ -73,6 +73,9 @@ Page({
   goPhrase() {
     wx.navigateTo({ url: '/pages/phrase/phrase' });
   },
+  goSpeak() {
+    wx.navigateTo({ url: '/pages/speak/speak' });
+  },
   goLearn() {
     if (!this.data.kanaReady) {
       wx.showToast({ title: '建议先学完五十音图哦~', icon: 'none' });

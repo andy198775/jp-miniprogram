@@ -47,6 +47,8 @@ function ensureUser() {
       streakLongest: 0,
       learnedTotal: 0,
       everAllCorrect: false,
+      speakAttempts: 0,
+      speakCorrect: 0,
       lastStudyDate: '',
       createdAt: Date.now()
     };
@@ -84,7 +86,9 @@ function handleCompleteStudy(data) {
   const before = {
     learnedTotal: user.learnedTotal || 0,
     streakCurrent: user.streakCurrent || 0,
-    everAllCorrect: !!user.everAllCorrect
+    everAllCorrect: !!user.everAllCorrect,
+    speakAttempts: user.speakAttempts || 0,
+    speakCorrect: user.speakCorrect || 0
   };
 
   let earned = 0;
@@ -146,7 +150,9 @@ function handleCompleteStudy(data) {
   const after = {
     learnedTotal: user.learnedTotal,
     streakCurrent: user.streakCurrent,
-    everAllCorrect: !!user.everAllCorrect
+    everAllCorrect: !!user.everAllCorrect,
+    speakAttempts: user.speakAttempts || 0,
+    speakCorrect: user.speakCorrect || 0
   };
   const newAch = diffAch(before, after);
   if (newAch.length) {
@@ -172,6 +178,42 @@ function diffAch(before, after) {
   return computeAch(after).filter((a) => a.got && !gotBefore.has(a.id));
 }
 
+// 跟读评测结果记录：累计尝试/正确次数，返回新解锁成就
+function handleSpeak(data) {
+  const user = ensureUser();
+  const correct = !!(data && data.correct);
+  const before = {
+    learnedTotal: user.learnedTotal || 0,
+    streakCurrent: user.streakCurrent || 0,
+    everAllCorrect: !!user.everAllCorrect,
+    speakAttempts: user.speakAttempts || 0,
+    speakCorrect: user.speakCorrect || 0
+  };
+  user.speakAttempts = (user.speakAttempts || 0) + 1;
+  if (correct) user.speakCorrect = (user.speakCorrect || 0) + 1;
+  wx.setStorageSync(KEY_USER, user);
+
+  const after = {
+    learnedTotal: user.learnedTotal || 0,
+    streakCurrent: user.streakCurrent || 0,
+    everAllCorrect: !!user.everAllCorrect,
+    speakAttempts: user.speakAttempts,
+    speakCorrect: user.speakCorrect
+  };
+  const newAch = diffAch(before, after);
+  if (newAch.length) {
+    const achMap = wx.getStorageSync(KEY_ACH) || {};
+    const today = todayStr();
+    newAch.forEach((a) => { achMap[a.id] = achMap[a.id] || today; });
+    wx.setStorageSync(KEY_ACH, achMap);
+  }
+  return {
+    attempts: user.speakAttempts,
+    correct: user.speakCorrect,
+    newAch
+  };
+}
+
 function handleGetProgress() {
   const user = ensureUser();
   const days = wx.getStorageSync(KEY_DAYS) || {};
@@ -183,6 +225,8 @@ function handleGetProgress() {
     streakLongest: user.streakLongest || 0,
     learnedTotal: user.learnedTotal || 0,
     everAllCorrect: !!user.everAllCorrect,
+    speakAttempts: user.speakAttempts || 0,
+    speakCorrect: user.speakCorrect || 0,
     unlockedAch: wx.getStorageSync(KEY_ACH) || {},
     days,
     todayDone
@@ -204,6 +248,7 @@ function localHandler(name, data) {
       if (name === 'login') return resolve(handleLogin());
       if (name === 'getDailyTask') return resolve(handleGetDailyTask());
       if (name === 'completeStudy') return resolve(handleCompleteStudy(data));
+      if (name === 'speak') return resolve(handleSpeak(data));
       if (name === 'getProgress') return resolve(handleGetProgress());
       if (name === 'resetAll') { resetAll(); return resolve({ ok: true }); }
       reject(new Error('未知操作: ' + name));

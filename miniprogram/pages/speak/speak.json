@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "跟我读",
+  "usingComponents": {
+    "ach-pop": "/components/ach-pop/ach-pop"
+  }
+}
