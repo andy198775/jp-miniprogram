@@ -1,29 +1,44 @@
-<!-- 学习进行中 -->
+<!-- 学习进行中（题型多样化：听音选义/看词选义/听音选词/看词选罗马音/拼假名/例句填空） -->
 <view class="container" wx:if="{{!result}}">
   <view class="subtitle">第 {{idx + 1}} / {{total}} 个</view>
 
   <view class="card center">
-    <view class="kana">{{cur.kana}}</view>
-    <view class="subtitle" wx:if="{{cur.kanji}}">{{cur.kanji}}</view>
-    <view class="subtitle">{{cur.roma}}</view>
-    <button class="btn-ghost" style="margin-top:16rpx" bindtap="playAudio">🔊 听发音</button>
+    <!-- 听音题：大喇叭 -->
+    <block wx:if="{{q.type === 'listen-cn' || q.type === 'listen-kana'}}">
+      <view class="audio-big" bindtap="playAudio">🔊</view>
+      <view class="subtitle">点一下，听发音</view>
+    </block>
+    <!-- 看词题：显示假名/汉字 -->
+    <block wx:elif="{{q.showWord}}">
+      <view class="kana">{{q.word.kana}}</view>
+      <view class="subtitle" wx:if="{{q.word.kanji}}">汉字：{{q.word.kanji}}</view>
+    </block>
+    <!-- 拼假名：缺一个字 -->
+    <block wx:elif="{{q.type === 'kana-blank'}}">
+      <view class="kana">{{q.blankKana}}</view>
+      <view class="subtitle">意思是「{{q.word.cn}}」</view>
+    </block>
+    <!-- 例句填空 -->
+    <block wx:else>
+      <view class="sentence">{{q.sentence}}</view>
+    </block>
   </view>
 
-  <view class="subtitle center">选一选它的意思</view>
+  <view class="subtitle center">{{q.ask}}</view>
   <view class="opts">
     <button
-      wx:for="{{options}}"
+      wx:for="{{q.options}}"
       wx:key="*this"
-      class="opt {{answered ? (item === cur.cn ? 'ok' : (item === picked ? 'no' : '')) : ''}}"
-      data-cn="{{item}}"
+      class="opt {{answered ? (item === q.answer ? 'ok' : (item === picked ? 'no' : '')) : ''}}"
+      data-val="{{item}}"
       bindtap="choose"
       disabled="{{answered}}">{{item}}</button>
   </view>
 
   <view wx:if="{{answered}}" class="center" style="margin-top:16rpx">
     <view class="hl" wx:if="{{correct}}">✅ 答对啦！</view>
-    <view wx:else>再听一次，想一想～</view>
-    <button class="btn-primary" style="margin-top:16rpx" bindtap="next">{{correct ? '下一个' : '再听一次'}}</button>
+    <view wx:else>再试一次，你可以的💪</view>
+    <button class="btn-primary" style="margin-top:16rpx" bindtap="next">{{correct ? '下一个' : '再试一次'}}</button>
   </view>
 </view>
 

@@ -17,7 +17,7 @@ jp-miniprogram/
 │  ├─ app.js/json/wxss    app.js 含 mode 开关；app.wxss 含全局样式
 │  ├─ pages/             launch / home / learn / review / calendar / profile / kana / phrase / speak
 │  ├─ components/ach-pop  全局成就解锁弹窗组件
-│  ├─ utils/             dataService(统一数据层) · cloud · audio(发音+识别双通道) · srs(SM-2) · store
+│  ├─ utils/             dataService(统一数据层) · cloud · audio(发音+识别双通道) · quiz(六题型生成器) · srs(SM-2) · store
 │  ├─ data/              words.js(N5 词库) · kana.js(五十音图) · phrases.js(常用语) · achievements.js(成就)
 │  └─ audio/             <日语文本>.mp3 本地发音兜底（已生成 208 个）
 ├─ cloudfunctions/       云函数（微信云开发，云端模式使用）
@@ -87,6 +87,23 @@ jp-miniprogram/
 ### 注意
 - **包体限制**：微信主包 2MB。五十音图约 70 个 + 常用语 30 个 + N5 词 90 个短音频，全放本地可能超主包。建议先放入门必需的（五十音图 + 常用语），N5 词等接插件后再用合成。
 - 文件放 `miniprogram/audio/` 下即可，开发者工具编译后会随包加载。
+
+## 题型多样化（learn / review 共用）
+
+背词与复习不再是单一「听音选义」。`utils/quiz.js` 每次学习按打乱轮转分配 **6 种题型**，降低单调：
+
+| 题型 | 题干 | 选项 |
+|---|---|---|
+| 听音选义 | 🔊 播放发音 | 中文释义 |
+| 看词选义 | 显示假名/汉字 | 中文释义 |
+| 听音选词 | 🔊 播放发音 | 日语假名 |
+| 看词选罗马音 | 显示假名 | 罗马音 |
+| 拼假名 | 单词缺一个假名 + 中文提示 | 单假名 |
+| 例句填空 | 例句中目标词挖空（用 `words.js` 的 `ex` 字段） | 日语假名 |
+
+- 零失败设计延续：答错只能「再试一次」（听音题自动重听），答对才进入下一题。
+- 个别词不适合某题型时自动回退（单假名不挖空、例句不含本词不填空），任何词都能出题。
+- 自测覆盖：6 题型 × 90 词 + 50 个模拟 session（选项唯一、答案在选项、挖空可还原）全部通过。
 
 ## 跟我读 · 语音评测（孩子开口说，App 判断对不对）
 

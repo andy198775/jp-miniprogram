@@ -1,5 +1,6 @@
 const dataService = require('../../utils/dataService.js');
 const audio = require('../../utils/audio.js');
+const quiz = require('../../utils/quiz.js');
 const { WORDS, NEW_PER_DAY } = require('../../data/words.js');
 
 function buildSession(learnedIds, dueIds) {
@@ -15,8 +16,8 @@ Page({
     list: [],
     idx: 0,
     total: 0,
-    cur: null,
-    options: [],
+    types: [],
+    q: null,
     answered: false,
     correct: false,
     picked: '',
@@ -33,7 +34,9 @@ Page({
           this.setData({ result: { empty: true } });
           return;
         }
-        this.setData({ list, total: list.length, startTime: Date.now() }, () => this.showWord());
+        // 题型多样化：整个 session 的题型序列一次性分配（打乱轮转，覆盖均匀）
+        const types = quiz.assignTypes(list);
+        this.setData({ list, total: list.length, types, startTime: Date.now() }, () => this.showWord());
       })
       .catch((e) => {
         wx.showToast({ title: '加载失败', icon: 'none' });
@@ -42,35 +45,34 @@ Page({
   },
 
   showWord() {
-    const cur = this.data.list[this.data.idx];
-    if (!cur) {
+    const word = this.data.list[this.data.idx];
+    if (!word) {
       this.finish();
       return;
     }
-    const others = WORDS.filter((w) => w.id !== cur.id)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3)
-      .map((w) => w.cn);
-    const options = others.concat(cur.cn).sort(() => Math.random() - 0.5);
-    this.setData({ cur, options, answered: false, correct: false, picked: '' });
-    audio.speak(cur.kana);
+    const q = quiz.buildQuestion(word, this.data.types[this.data.idx]);
+    this.setData({ q, answered: false, correct: false, picked: '' }, () => {
+      if (q.audioText) audio.speak(q.audioText);
+    });
   },
 
   playAudio() {
-    if (this.data.cur) audio.speak(this.data.cur.kana);
+    if (this.data.q && this.data.q.audioText) audio.speak(this.data.q.audioText);
+    else if (this.data.q) audio.speak(this.data.q.word.kana);
   },
 
   choose(e) {
     if (this.data.answered) return;
-    const picked = e.currentTarget.dataset.cn;
-    const correct = picked === this.data.cur.cn;
-    const answers = this.data.answers.concat([{ wordId: this.data.cur.id, correct }]);
+    const picked = e.currentTarget.dataset.val;
+    const correct = picked === this.data.q.answer;
+    const answers = this.data.answers.concat([{ wordId: this.data.q.word.id, correct }]);
     this.setData({ answered: true, correct, picked, answers });
   },
 
   next() {
     if (!this.data.correct) {
-      audio.speak(this.data.cur.kana);
+      // 零失败：答错不惩罚，重听/重试，答对才过关
+      if (this.data.q && this.data.q.audioText) audio.speak(this.data.q.audioText);
       this.setData({ answered: false, picked: '' });
       return;
     }

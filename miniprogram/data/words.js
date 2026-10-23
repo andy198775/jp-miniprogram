@@ -19,7 +19,7 @@ const WORDS = [
   { id: 8, kana: 'さん', kanji: '3', roma: 'san', cn: '三', cat: '数字', ex: 'さん びきの ねこ。/ 三只猫。' },
   { id: 9, kana: 'よん', kanji: '4', roma: 'yon', cn: '四', cat: '数字', ex: 'よん さつ。/ 四本。' },
   { id: 10, kana: 'ご', kanji: '5', roma: 'go', cn: '五', cat: '数字', ex: 'ご こ。/ 五个。' },
-  { id: 11, kana: 'ろく', kanji: '6', roma: 'roku', cn: '六', cat: '数字', ex: 'むいか / ろく。/ 六。' },
+  { id: 11, kana: 'ろく', kanji: '6', roma: 'roku', cn: '六', cat: '数字', ex: 'ろくです。/ 是六。' },
   { id: 12, kana: 'なな', kanji: '7', roma: 'nana', cn: '七', cat: '数字', ex: 'なな つ。/ 七个。' },
   { id: 13, kana: 'はち', kanji: '8', roma: 'hachi', cn: '八', cat: '数字', ex: 'はち ひき。/ 八只。' },
   { id: 14, kana: 'きゅう', kanji: '9', roma: 'kyuu', cn: '九', cat: '数字', ex: 'きゅう まい。/ 九张。' },
