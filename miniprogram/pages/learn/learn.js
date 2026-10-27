@@ -6,7 +6,11 @@ const { WORDS, NEW_PER_DAY } = require('../../data/words.js');
 function buildSession(learnedIds, dueIds) {
   const learnedSet = new Set(learnedIds || []);
   const dueSet = new Set(dueIds || []);
-  const newWords = WORDS.filter((w) => !learnedSet.has(w.id)).slice(0, NEW_PER_DAY);
+  // 未学词按 (lv 难度, id) 升序：简单优先，循序渐进；复习词照旧
+  const newWords = WORDS
+    .filter((w) => !learnedSet.has(w.id))
+    .sort((a, b) => (a.lv - b.lv) || (a.id - b.id))
+    .slice(0, NEW_PER_DAY);
   const reviewWords = WORDS.filter((w) => dueSet.has(w.id));
   return newWords.concat(reviewWords);
 }

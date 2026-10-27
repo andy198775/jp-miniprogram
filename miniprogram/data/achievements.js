@@ -12,7 +12,8 @@ const ACHIEVEMENTS = [
   { id: 'streak15', name: '半月达人', desc: '连续打卡 15 天',   icon: '💎' },
   { id: 'streak30', name: '月度之星', desc: '连续打卡 30 天',   icon: '👑' },
   { id: 'speak1',  name: '勇敢开口', desc: '完成第一次跟读',   icon: '🎤' },
-  { id: 'speak10', name: '小百灵',   desc: '跟读读对 10 次',   icon: '🐦' }
+  { id: 'speak10', name: '小百灵',   desc: '跟读读对 10 次',   icon: '🐦' },
+  { id: 'word150', name: '词汇丰富', desc: '学会 150 个词',     icon: '📚' }
 ];
 
 function computeAch(p) {
@@ -36,6 +37,7 @@ function computeAch(p) {
       case 'streak30': got = streak >= 30; break;
       case 'speak1':   got = speakAttempts >= 1; break;
       case 'speak10':  got = speakCorrect >= 10; break;
+      case 'word150':  got = learned >= 150; break;
     }
     return Object.assign({}, a, { got });
   });
